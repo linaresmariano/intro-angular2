@@ -16,6 +16,11 @@ export default class PostService {
       return this._posts
     }
 
+    getPost(id) {
+      return this.http.get(`/noticias/${id}`).toPromise()
+                      .then(response => response.json());
+    }
+
     // create(post) {
     //   this._posts.push(post)
     // }
@@ -26,8 +31,15 @@ export default class PostService {
               .then(response => this._posts.push(post))
               .catch(err => console.log(err))
     }
+
+    upvote(post) {
+      this.http.put(`/noticias/${post._id}/upvote`)
+              .toPromise()
+              .then(response => this._posts.push(post))
+              .catch(err => console.log(err))
+    }
 }
 
 PostService.parameters = [
-  [Http]
+  Http
 ]

@@ -5,6 +5,19 @@ import Comment from '../models/Comment.js'
 
 let router = express.Router()
 
+router.param('noticia', (req, res, next, value) => {
+  Post.findById(value)
+    .then(noticia => {
+      if (! noticia ) {
+        throw new Error(`Noticia no encontrada ${value}`)
+      }
+
+      req.noticia = noticia
+      next()
+    })
+    .catch(next)
+})
+
 // Express routes
 router.get('/noticias', (req, res, next) => {
   Post.find()
@@ -29,7 +42,7 @@ router.get('/noticias/:noticia', (req, res, next) => {
 
 router.put('/noticias/:noticia/upvote', (req, res, next) => {
   const noticia = req.noticia
-  noticia.upvotes()
+  noticia.upvote()
 
   noticia.save()
     .then(noticiaGuardada => res.json(noticiaGuardada))

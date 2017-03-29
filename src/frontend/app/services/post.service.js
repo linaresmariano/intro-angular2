@@ -33,9 +33,9 @@ export default class PostService {
     }
 
     upvote(post) {
-      this.http.put(`/noticias/${post._id}/upvote`)
+      return this.http.put(`/noticias/${post._id}/upvote`)
               .toPromise()
-              .then(response => this._posts.push(post))
+              .then((response) => reponse.json())
               .catch(err => console.log(err))
     }
 }
